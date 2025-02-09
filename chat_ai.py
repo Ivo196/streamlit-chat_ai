@@ -3,7 +3,7 @@ import streamlit as st
 
 
 st.title(" Chat AI with Deepseek")
-st.write("This is a simple web app to chat with Deepseek AI. Please type your message in the box below and press Enter to get a response.")
+st.write("This is a simple web app to chat with Deepseek AI.")
 
 user_input = st.chat_input("Write a message...")
 
