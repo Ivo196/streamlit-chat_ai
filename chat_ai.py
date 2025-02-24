@@ -2,7 +2,7 @@ import ollama
 import streamlit as st
 
 
-st.title(" Chat AI with Deepseek")
+st.title("Chat AI with Deepseek 🤖✨")
 st.write("This is a simple web app to chat with Deepseek AI.")
 
 user_input = st.chat_input("Write a message...")
@@ -36,5 +36,5 @@ if user_input:
 
     thinking_message.markdown(bot_response)
 
- # Agregar la respuesta al historial
+ 
     st.session_state.messages.append({"role": "assistant", "content": bot_response})
