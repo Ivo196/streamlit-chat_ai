@@ -8,7 +8,7 @@ load_dotenv()
 client = genai.Client(api_key = os.getenv('GEMINI_API'))
 
 def chat_ai(message):
-    instructions = "Responde como un asistente de chat sin incluir 'Assistant:' en la respuesta. "
+    instructions = "Responds like a chat assistanta without including 'Assistant:' in the response."
     response = client.models.generate_content(
         model="gemini-1.5-flash",
         contents= message + instructions
