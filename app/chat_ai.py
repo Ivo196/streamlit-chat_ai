@@ -2,7 +2,7 @@ import ollama
 import streamlit as st
 
 
-st.title("Chat AI with DeepSeek 🤖✨")
+st.title("Chat AI with Deep 🤖✨")
 st.write("This is a simple web app to chat with Deepseek AI.")
 
 user_input = st.chat_input("Write a message...")
