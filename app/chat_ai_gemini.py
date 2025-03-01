@@ -1,19 +1,35 @@
 from dotenv import load_dotenv
-from google import genai
+import google.generativeai as genai
 import os
 import streamlit as st
 
-load_dotenv()
+# Cargar variables de entorno desde .env si existe
+# En Docker, las variables ya estarán disponibles en el entorno
+# si se usa --env-file al ejecutar el contenedor
+load_dotenv(override=True)  # override=True da prioridad a las variables en .env sobre las del entorno
 
-client = genai.Client(api_key = os.getenv('GEMINI_API'))
+# Verificar si la API key está configurada
+api_key = os.getenv('GEMINI_API')
+if not api_key:
+    st.error("⚠️ La API key de Gemini no está configurada. Por favor, configura la variable de entorno GEMINI_API.")
+    st.info("Si estás ejecutando la aplicación con Docker, asegúrate de usar --env-file .env al ejecutar el contenedor.")
+    st.stop()
+
+# Inicializar el cliente de Gemini
+try:
+    genai.configure(api_key=api_key)
+    model = genai.GenerativeModel('gemini-1.5-flash')
+except Exception as e:
+    st.error(f"⚠️ Error al inicializar el cliente de Gemini: {str(e)}")
+    st.stop()
 
 def chat_ai(message):
-    instructions = "Responds like a chat assistanta without including 'Assistant:' in the response."
-    response = client.models.generate_content(
-        model="gemini-1.5-flash",
-        contents= message + instructions
-    )
-    return response.text
+    try:
+        instructions = "Responds like a chat assistant without including 'Assistant:' in the response."
+        response = model.generate_content(message + instructions)
+        return response.text
+    except Exception as e:
+        return f"Lo siento, ocurrió un error al procesar tu mensaje: {str(e)}"
 
 
 st.title("Chat AI with GEMINI 1.5 🤖")
