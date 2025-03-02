@@ -22,6 +22,9 @@ jobs:
     - name: Reload pm2
       run: |
         pm2 reload 0
+    - name: create .env file
+      run: |
+        echo 'GEMINI_API=${{ secrets.GEMINI_API }}' > .env
 
     - name: Delete Docker Image and Container
       run: |
