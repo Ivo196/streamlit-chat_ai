@@ -22,3 +22,6 @@ jobs:
     - name: Reload pm2
       run: |
         pm2 reload 0
+
+    - name: Build Docker Image
+      run: docker build -t chat-ai . 
