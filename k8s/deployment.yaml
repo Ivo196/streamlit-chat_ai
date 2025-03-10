@@ -1,1 +1,19 @@
 apiVersion: apps/v1 
+kind: Deployment
+metadata: 
+  name: streamlit-app
+Spec: 
+  replicas: 1 
+  selector: 
+    matchLabels:
+      app: chat
+  template: 
+    metadata:
+      labels: 
+        app: chat
+    spec:
+      containers:
+        - name: streamlit-app
+          image: ivo196/streamlit-chat-gemini
+          ports: 
+            - containerPort: 8501
