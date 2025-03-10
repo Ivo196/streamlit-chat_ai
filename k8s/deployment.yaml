@@ -1,19 +1,38 @@
 apiVersion: apps/v1 
 kind: Deployment
 metadata: 
-  name: streamlit-app
-Spec: 
-  replicas: 1 
+  name: streamlit-app  # Nombre del deployment
+spec: 
+  replicas: 1  # Número de réplicas del pod
   selector: 
     matchLabels:
       app: chat
   template: 
     metadata:
       labels: 
-        app: chat
+        app: chat  # Nombre del pod
     spec:
       containers:
-        - name: streamlit-app
-          image: ivo196/streamlit-chat-gemini
-          ports: 
-            - containerPort: 8501
+        - name: streamlit-app  # Nombre del contenedor dentro del pod
+          image: ivo196/stremlit-chat-gemini:latest # Imagen del contenedor (local o dockerhub )
+          ports:  
+          - containerPort: 8501 # Puerto del contenedor (streamlit) 
+          imagePullPolicy: IfNotPresent # Evita volver a descargar la imagen si ya existe localmente
+          resources:
+            requests:
+              cpu: "250m"       # Cantidad mínima de CPU requerida
+              memory: "128Mi"   # Cantidad mínima de memoria requerida
+            limits:
+              cpu: "500m"       # Límite máximo de CPU
+              memory: "256Mi"   # Límite máximo de memoria
+          env:
+            - name: GEMINI_API
+              valueFrom:
+                secretKeyRef:
+                  name: gemini-secret
+                  key: GEMINI_API
+
+
+---
+
+
