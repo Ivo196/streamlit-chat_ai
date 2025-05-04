@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: streamlit-app  # Nombre del contenedor dentro del pod
-          image: ivo196/stremlit-chat-gemini:latest # Imagen del contenedor (local o dockerhub )
+          image: ivo196/streamlit-chat-gemini # Imagen del contenedor (local o dockerhub )
           ports:  
           - containerPort: 8501 # Puerto del contenedor (streamlit) 
           imagePullPolicy: IfNotPresent # Evita volver a descargar la imagen si ya existe localmente
