@@ -1,0 +1,37 @@
+Exacto, lo has captado muy bien. En concreto:
+
+NodePort crea el puerto 30001 en cada nodo (raspberry1 y raspberry2)
+
+Cuando defines type: NodePort y pones nodePort: 30001, Kubernetes configura en cada nodo (tanto en raspberry1 como en raspberry2) que el puerto TCP 30001 esté “abierto” y ligado al Service interno.
+
+Cualquier petición que llegue a raspberry1:30001 o a raspberry2:30001 va a ser interceptada por kube-proxy en ese nodo.
+
+Ese NodePort redirige siempre al ClusterIP
+
+El Service de tipo NodePort crea automáticamente un ClusterIP (por ejemplo, 10.43.170.236).
+
+Cuando haces curl http://raspberry1:30001, kube-proxy en raspberry1 recibe la petición en el puerto 30001 y la reenvía al ClusterIP:8501 (que es la IP “virtual” interna del Service).
+
+El ClusterIP, gracias a kube-proxy, “sabe” qué pods están atentos al selector (p. ej. todos los Pods streamlit-app-…) sin importar si esos pods están en raspberry1 o en raspberry2.
+
+ClusterIP es la “red interna virtual” que agrupa todos los pods
+
+Ese 10.43.170.236:8501 no corresponde a un nodo físico, sino a un IP “fantasma” gestionado por Kubernetes.
+
+En cada nodo (raspberry1 y raspberry2), kube-proxy tiene reglas que asocian esa IP de Service (10.43.170.236) con todas las IPs reales de los Pods que coinciden con selector: app=streamlit-app.
+
+Por tanto, si un Pod está en raspberry2 (por ejemplo, 10.42.2.13:8501), o en raspberry1 (10.42.0.41:8501), el ClusterIP siempre los ve como “endpoints” válidos.
+
+Si pides a raspberry2:30001 o a raspberry1:30001, el comportamiento es el mismo
+
+Imagina que todos los pods están en raspberry2. Si haces desde fuera http://raspberry1:30001, aun así kube-proxy en raspberry1 reconocerá que el Service 10.43.170.236:8501 está “atrás” de unos Pods que están en raspberry2. Entonces redirigirá la petición a raspberry2 por la red interna y te servirá la respuesta.
+
+Y al revés: si haces http://raspberry2:30001, kube-proxy en raspberry2 te responde directamente o, si no hay pods locales, redirige al otro nodo donde efectivamente vivan los pods. Siempre se envía al ClusterIP primero, y éste balancea a los Pods reales.
+
+Por tanto, tu resumen es correcto:
+
+NodePort (30001 en cada nodo) = puente de entrada desde el exterior hacia el ClusterIP.
+
+ClusterIP = punto de entrada interno que conoce todas las IPs de los pods (tanto en raspberry1 como en raspberry2) y balancea el tráfico.
+
+De esta manera, no importa a qué nodo físico (raspberry1 o raspberry2) apuntes en el puerto 30001: la petición “entra” al ClusterIP y Kubernetes se encarga de enviarla al Pod que esté libre, dondequiera que esté.
