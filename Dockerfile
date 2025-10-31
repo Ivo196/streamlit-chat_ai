@@ -8,7 +8,7 @@ COPY requirements.txt .
 
 # Instalar dependencias
 RUN pip install --no-cache-dir -r requirements.txt
-
+RUN pip install -U google-generativeai
 # Copiar el resto del código
 # Nota: .env no se copiará si está en .dockerignore
 COPY . .

@@ -18,7 +18,7 @@ if not api_key:
 # Inicializar el cliente de Gemini
 try:
     genai.configure(api_key=api_key)
-    model = genai.GenerativeModel('gemini-1.5-flash')
+    model = genai.GenerativeModel('models/gemini-2.5-flash')
 except Exception as e:
     st.error(f"⚠️ Error al inicializar el cliente de Gemini: {str(e)}")
     st.stop()
@@ -32,8 +32,8 @@ def chat_ai(message):
         return f"Lo siento, ocurrió un error al procesar tu mensaje: {str(e)}"
 
 
-st.title("Chat AI with GEMINI-FLASH-1.5 🤖")
-st.write("This is a chat using Gemini 1.5 flash model. ")
+st.title("Chat AI with GEMINI-2.5-FLASH 🤖")
+st.write("This is a chat using Gemini 2.5 flash model.")
 
 
 with st.chat_message('assistant'):
