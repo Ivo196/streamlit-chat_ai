@@ -24,5 +24,4 @@ jobs:
               platforms: linux/arm64/v8
               tags: |
                 ivo196/streamlit-chat-gemini:latest
-                ivo196/streamlit-chat-gemini:${{ github.sha }}
 
