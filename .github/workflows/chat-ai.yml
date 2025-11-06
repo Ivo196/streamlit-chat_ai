@@ -19,9 +19,10 @@ jobs:
 
       - uses: docker/build-push-action@v6   # construye y SUBE la imagen
         with:
-          context: .
-          push: true
-          platforms: linux/arm64/v8         # ARM64 para Raspberry
-          tags: |
-            ivo196/streamlit-chat-gemini:latest
-            ivo196/streamlit-chat-gemini:${{ github.sha }}  # tag inmutable por commit
+              context: .
+              push: true
+              platforms: linux/arm64/v8
+              tags: |
+                ivo196/streamlit-chat-gemini:latest
+                ivo196/streamlit-chat-gemini:${{ github.sha }}
+
