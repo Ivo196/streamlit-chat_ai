@@ -32,7 +32,7 @@ def chat_ai(message):
         return f"Lo siento, ocurrió un error al procesar tu mensaje: {str(e)}"
 
 
-st.title("Chat AI with GEMINI-2.5-FLASH 🤖")
+st.title("Chat AI with GEMINI-2.5-FLASH 🤖 Version 1.0.0")
 st.write("This is a chat using Gemini 2.5 flash model.")
 
 
